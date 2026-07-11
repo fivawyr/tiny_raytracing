@@ -1,0 +1,1 @@
+![Notes](resources/notes.pdf)
