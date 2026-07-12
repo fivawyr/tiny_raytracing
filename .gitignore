@@ -1,0 +1,11 @@
+*.o
+*.so
+*.dylib
+*.dll
+
+build/
+bin/
+debug/
+release/
+code
+comp_helper
