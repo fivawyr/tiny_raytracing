@@ -20,12 +20,15 @@ typedef vector<i32> vi;
 #define COLOR_BLUE 0x0000ff
 #define COLOR_GREEN 0x008000
 
+i32 backgroundColor = 0xff0000;
+
 struct Color {
     i32 r, g, b, a; 
 };
 
 struct Object {
-
+    i32 x, y, z;
+    bool isGlass;
 };
 
 struct Point {
@@ -48,17 +51,35 @@ struct Ray {
     
     Point origin;
     Vector direction;
-}
+};
 
-Color Trace(const Ray &ray, int depth) {
+struct Distance {
+
+};
+
+Color Trace(const Ray &ray, int depth, Color &backgroundColor) {
     Object *object = NULL;
     f32 minDistance = INFINITY;
     Point pointHit; 
     Normal normalHit;
     for (i32 k = 0; k < object.size(); k++) {
         if (Intersect(object[k], ray, &pointHit, &normalHit)) {
+            f32 distance = Distance(ray.origin, pointHit);
+            if (distance < minDistance) {
+                object = object[k];
+                minDistance = distance; 
 
+            }
         }
+    }
+    if (object == NULL) return backgroundColor;
+    // if the object material is glass and the depth is less than MAX_RAY_DEPTH, split the ray
+    if (object->isGlass && depth < MAX_RAY_DEPTH) {
+        Ray reflectionRay, refractionRay;
+        Color reflectionColor, refractionColor;
+        f32 Kr, Kt;
+        reflectionRay = computeRefractionRay()
+
     }
 }
 
