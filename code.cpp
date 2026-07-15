@@ -1,4 +1,3 @@
-#include <array>
 #include <cmath>
 #include <cstddef>
 #include <iostream>
@@ -21,6 +20,12 @@ typedef vector<i32> vi;
 #define COLOR_GREEN 0x008000
 
 i32 backgroundColor = 0xff0000;
+i32 imageHeight = 300;
+i32 imageWidth = 500; 
+
+i32 pixels[imageWidth][imageHeight] = {
+
+}
 
 struct Color {
     i32 r, g, b, a; 
@@ -59,6 +64,18 @@ struct Distance {
 
 };
 
+struct Light {
+    i32 brightness;
+};
+
+i32 Fresnel(){
+
+}
+
+i32 Normalize(){
+
+}
+
 Color Trace(const Ray &ray, int depth, Color &backgroundColor, f32 &computeRefractionRay) {
     Object *object = NULL;
     f32 minDistance = INFINITY;
@@ -84,11 +101,38 @@ Color Trace(const Ray &ray, int depth, Color &backgroundColor, f32 &computeRefra
         reflectionColor = Trace(reflectionRay, depth + 1); // recursive call 
         refractionRay = computeRefractionRay(object->indexOfRefraction, ray.direction, normalHit, ray.origin, pointHit);
         refractionColor = Trace(refractionRay, depth + 1);
+        Fresnel(object->indexOfRefraction, normalHit, ray.direction, &Kr, &Kt);
+        return reflectionColor * Kr + refractionColor * (1 - Kr);
+    else if (!object->isGlass) {
+        Ray shadowRay;
+        shadowRay.origin = pointHit + normalHit * bias // bias to avoid self-intersection 
+        shadowRay.direction = Normalize(lightPosition - pointHit);
+        bool isInShadow = false;
+        for (i32 k = 0; k < object.size(); ++k) {
+            if (Intersect(object[k], shadowRay)) {
+                isInShadow = true;
+                break;
+                }
+            }
+            if (!isInShadow) return object->color * light.brightness; 
+        }
     }
+    return backgroundColor;
 }
+
+
 
 f64 computeRefractionRay{0};
 
 int main() {
     cout << "Hello Raycasting" << "\n";
+
+    // render loop
+    for (i32 j = 0; j < imageHeight; j++) {
+        for (int i = 0; i < imageWidth; i++) {
+            Ray primRay;
+            computePrimRay(i, j, &primRay);
+            pixels[i][j] = Tracce(primRay, 0);
+        }
+    }    
 }
