@@ -29,6 +29,8 @@ struct Color {
 struct Object {
     i32 x, y, z;
     bool isGlass;
+    f32  indexOfRefraction;
+
 };
 
 struct Point {
@@ -57,7 +59,7 @@ struct Distance {
 
 };
 
-Color Trace(const Ray &ray, int depth, Color &backgroundColor) {
+Color Trace(const Ray &ray, int depth, Color &backgroundColor, f32 &computeRefractionRay) {
     Object *object = NULL;
     f32 minDistance = INFINITY;
     Point pointHit; 
@@ -78,10 +80,14 @@ Color Trace(const Ray &ray, int depth, Color &backgroundColor) {
         Ray reflectionRay, refractionRay;
         Color reflectionColor, refractionColor;
         f32 Kr, Kt;
-        reflectionRay = computeRefractionRay()
-
+        reflectionRay = computeRefractionRay(object->indexOfRefraction, ray.direction, normalHit, ray.origin, pointHit);
+        reflectionColor = Trace(reflectionRay, depth + 1); // recursive call 
+        refractionRay = computeRefractionRay(object->indexOfRefraction, ray.direction, normalHit, ray.origin, pointHit);
+        refractionColor = Trace(refractionRay, depth + 1);
     }
 }
+
+f64 computeRefractionRay{0};
 
 int main() {
     cout << "Hello Raycasting" << "\n";
