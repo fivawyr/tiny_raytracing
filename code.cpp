@@ -39,20 +39,22 @@ struct Object {
 };
 
 struct Point {
-    i32 x, y, z;
+    f32 x, y, z;
 };
 
 struct Vector {
-    i32 x, y, z;
+    f32 x, y, z;
 };
 
 struct Normal {
-
+    Point center;
+    f32 radius; 
+    Color color;
+    bool isGlass;
+    f32 indexOfRefraction;
 };
 
-struct Intersect {
 
-};
 
 struct Ray {
     
@@ -60,9 +62,6 @@ struct Ray {
     Vector direction;
 };
 
-struct Distance {
-
-};
 
 struct Light {
     i32 brightness;
@@ -75,6 +74,15 @@ i32 Fresnel(){
 i32 Normalize(){
 
 }
+
+bool Intersect(const Object &object, const Ray &ray, Point &hitPoint, Normal &hitNormal) {
+
+}
+
+f32 Distance(const Point &a, const Point &b) {
+
+}
+
 
 Color Trace(const Ray &ray, int depth, Color &backgroundColor, f32 &computeRefractionRay) {
     Object *object = NULL;
